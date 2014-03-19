@@ -1,0 +1,23 @@
+|==========================|
+|==========================|
+| THE FORCE : Architecture |
+|==========================|
+|==========================|
+
+class CSVFile :
+	"""
+	A CSVFile is an object that represents a csv file by using properties that are
+	more convenient than the raw csv file.
+	"""
+	
+	def __init__(self, path) :
+		"""
+		INPUT
+		The path to a csv file.
+		
+		EFFECT
+		Populates the different attributes of the object with data found in the file
+		pointed by the parameter `path`.
+		"""
+		
+	

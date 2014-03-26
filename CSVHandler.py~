@@ -1,0 +1,76 @@
+import csv
+import io
+
+class CSVFile(object) :
+	"""
+	A conveniant object that represents a CSV file.
+	"""
+	
+	def __init__(self, path=None) :
+		self._headers = list()
+		self._data = dict()
+		
+		if path :
+			self._load_file(path)
+		else :
+			#TODO : raise an exception
+			print("No path provided for the creation of the CSVFile object.")
+			
+	@property
+	def headers(self):
+		return self._headers
+		
+	@property
+	def data(self):
+		return self._data
+		
+		
+	def _load_file(self, path, template=None) :
+		"""
+		Loads the file pointed by `path` and populates the related properties. By default the function
+		considers the file to be a set of the form
+		
+				header1		header2		header3		...		headerN
+				val11		val12		val13				val1N
+				val21		val22		val23				val2N
+				...			...			...					...
+				valM1		valM2		valM3				valMN
+				
+		where headerX are str objects and valYX are float objects.
+		But one can provide a custom template if this does not meet your requirements.
+		"""
+		#TODO : implements the template feature.
+		# Hint : `template` could be a dictionary where keys are field names and values are values types.
+		# e.g. : template = {PRIM_X_CURRENT:float, ROOM_TYPE:str}
+		with open(path, 'rb') as my_file:
+			reader = csv.DictReader(my_file, dialect='excel', delimiter=',')
+
+			# Process the whole file and populate self._data
+			for line in reader :
+				for (k,v) in line.items():
+					if k not in self._data:
+						self._data[k] = [v]
+					else:
+						self._data[k].append(float(v))	# The float conversion is needed because the DictReader returns str values by default.
+					
+			self._headers = reader.fieldnames
+					
+					
+	def to_file(self, path) :
+		"""
+		Generate a csv file based on the CSVFile object.
+		"""
+		pass
+		
+		
+#========== TESTING ========== #
+if __name__ == "__main__":
+	import sys
+	import os
+	if os.path.isfile(sys.argv[1]):
+		c = CSVFile(sys.argv[1])
+		test_field = 8
+		print("This is field {} : {}".format(c.headers[test_field], c.data[c.headers[test_field]]))
+		print("Size : {}".format(len(c.data[c.headers[test_field]])))
+	else:
+		print("Error, the file does not exist")

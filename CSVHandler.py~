@@ -62,15 +62,49 @@ class CSVFile(object) :
 		"""
 		pass
 		
+	def __str__(self):
+		if len(self._headers) > 3 or len(self._data[self._headers[0]]) > 15 :
+			return "CSVFile object."
+		else :
+			result = ""
+			for h in self._headers :
+				result += h + " : " + str(self._data[h])
+			return result
+		
+		
+
+class Field(CSVFile):
+	"""
+	A CSVFile object that represents a single field (column).
+	"""
+	def __init__(self, header=None, values=None) :
+		self._headers = [header]
+		self._title = header
+		self._data = dict()
+		self._data[header] = values
+		
+	@property
+	def title(self):
+		return self._title
+		
+		
 		
 #========== TESTING ========== #
 if __name__ == "__main__":
 	import sys
 	import os
 	if os.path.isfile(sys.argv[1]):
-		c = CSVFile(sys.argv[1])
 		test_field = 8
-		print("This is field {} : {}".format(c.headers[test_field], c.data[c.headers[test_field]]))
-		print("Size : {}".format(len(c.data[c.headers[test_field]])))
+		c = CSVFile(sys.argv[1])
+		f = Field(header=c.headers[test_field], values=c.data[c.headers[test_field]])
+		print("Field object created")
+		print("Title : {}".format(f.headers))
+		print("Values : {}".format(f.data[f.title]))
+		
+		print("c : This is field {} : {}".format(c.headers[test_field], c.data[c.headers[test_field]]))
+		print("c : Size : {}".format(len(c.data[c.headers[test_field]])))
+		
+		print(c)
+		print(f)
 	else:
 		print("Error, the file does not exist")

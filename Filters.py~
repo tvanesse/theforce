@@ -1,28 +1,34 @@
+from CSVHandler import CSVFile, Field
+
 class Filter(object):
 	"""
-	An object that is able to produce a filtered version of a CSVFile based
+	An abstract object that is able to produce a filtered version of a CSVFile based
 	on some filtering criterias.
 	"""
-	def __init__(self, csvin=None):
+	def __init__(self, csvin=CSVFile()):
 		self._input = csvin
 		
-	#TODO : find out how to get an interface-like behaviour in Python
-	# Say "I want all subclasses to implement this method"
 	def job(self):
-		pass
-		
+		"""
+		This method is abstract. It should be overriden by all the classes extending
+		Filter.
+		"""
+		raise NotImplementedError
 		
 
 class FieldSelector(Filter):
 	"""
 	A Filter object that selects a field within a given CSVFile.
 	"""
-	def __init__(self, csvin=None, field):
-		super()
+	def __init__(self, csvin=CSVFile(), field):
+		super(FieldSelector, self).__init__(csvin)
 		self._field = field
 	
 	def job(self):
-		return self._input.data[self._field]
+		"""
+		Returns a Field object out of 
+		"""
+		return Field(header=self._field, values=self._input.data[self._field])
 	
 
 
@@ -30,8 +36,10 @@ class Updater(Filter):
 	pass
 	
 	
+	
 class Remover(Filter):
 	pass
+	
 	
 	
 class Inserter(Filter):

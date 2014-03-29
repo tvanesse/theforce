@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from CSVHandler import CSVFile, Field
 
 class Filter(object):
@@ -25,16 +26,24 @@ class FieldSelector(Filter):
 	A Filter object that selects a field within a given CSVFile.
 	"""
 	def __init__(self, field, csvin):
-		super(FieldSelector, self).__init__(csvin=csvin)
+		super(FieldSelector, self).__init__(csvin)
 		self._field = field
+		
+	@property
+	def field(self):
+		return self._field
+		
+	@field.setter
+	def field(self, value):
+		self._field = value
 	
 	def output(self):
 		"""
-		Returns a Field object out of a bigger CSVFile.
+		Returns a Field object out of a bigger CSVFile. The selected
+		field is stored in self._field.
 		"""
 		return Field(header=self._field, values=self._input.data[self._field])
 	
-
 
 class Updater(Filter):
 	pass

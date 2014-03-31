@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 from gi.repository import Gtk, Gdk, GdkPixbuf
-import os
-import sys
 from ..CSVHandler import CSVFile
 
 """
@@ -29,25 +27,29 @@ default_info_label = builder.get_object("default_info_label")
 # -----------------
 # Filters iconview
 # -----------------
+# The Gtk.Iconview and its related Gtk.Liststore
 filters_iconview = builder.get_object("filters_iconview")
 filters_liststore = builder.get_object("filters_liststore")
 filters_iconview.set_pixbuf_column(1)
 filters_iconview.set_text_column(0)
 # The different filters
 filters_liststore.append(["Field selector", Gtk.IconTheme.get_default().load_icon("gtk-copy", 32, 0)])
+
 # Drag and drop behaviour. This is the source.
-filters_iconview.enable_model_drag_source(Gdk.ModifierType.BUTTON1_MASK, [], Gdk.DragAction.COPY)
+filters_iconview.enable_model_drag_source(Gdk.ModifierType.BUTTON1_MASK,
+										  [],
+										  Gdk.DragAction.COPY)	# Turns the iconview into a drag source for automatic DND
+filters_iconview.drag_source_add_text_targets()
 
 # -----------------
-# Workflow grid
+# Workflow area
 # -----------------
-workflow_grid = builder.get_object("workflow_grid")
-workflow_grid.drag_dest_set(Gtk.DestDefaults.ALL, [], Gdk.DragAction.COPY)
-first_frame_label = builder.get_object("first_frame_label")
-first_frame_label.drag_dest_set(Gtk.DestDefaults.ALL, [], Gdk.DragAction.COPY)
+new_item_button = builder.get_object("new_item_button")
+new_item_button.drag_dest_set(Gtk.DestDefaults.ALL,
+								[],
+								Gdk.DragAction.COPY)	# Sets the button as a potential drop destination
+new_item_button.drag_dest_add_text_targets()
 
-
-# Signal handlers
 class Signal_Handlers:
 	def on_main_window_delete_event(self, *args):
 		Gtk.main_quit(*args)
@@ -78,14 +80,12 @@ class Signal_Handlers:
 	def on_filters_iconview_drag_begin(self, widget, drag_context):
 		print("Drag started.")
 		
-	def on_filters_iconview_drag_data_get(self, widget, drag_context):
-		print("Drag launched.")
+	def on_filters_iconview_drag_data_get(self, widget, drag_context, data, info, time):
+		print("Info : {}, Data : {}".format(info, data))
+		print("Drag-context : {}".format(drag_context))
 		
 	def on_workflow_drag_data_received(self, widget, drag_context, x,y, data,info, time):
 		print("Drop")
-		
-	def on_workflow_drag_motion(self, widget, drag_context):
-		print("Fly me to the moon")
 		
 builder.connect_signals(Signal_Handlers())
 main_window.show_all()

@@ -9,6 +9,9 @@ class Filter(object):
 	def __init__(self, csvin):
 		self._input = csvin
 		
+	def __str__(self):
+		raise NotImplementedError
+		
 	@property
 	def inputCSV(self):		# damn it ! input is already used by Python
 		return self._input
@@ -25,9 +28,12 @@ class FieldSelector(Filter):
 	"""
 	A Filter object that selects a field within a given CSVFile.
 	"""
-	def __init__(self, field, csvin):
+	def __init__(self, field=None, csvin=None):
 		super(FieldSelector, self).__init__(csvin)
 		self._field = field
+		
+	def __str__(self):
+		return "Field selector"
 		
 	@property
 	def field(self):
@@ -45,18 +51,21 @@ class FieldSelector(Filter):
 		return Field(header=self._field, values=self._input.data[self._field])
 	
 
-class Updater(Filter):
-	pass
+class FindAndReplace(Filter):
+	def __str__(self):
+		return "Find and Replace"
 	
 	
 	
 class Remover(Filter):
-	pass
+	def __str__(self):
+		return "Remover"
 	
 	
 	
 class Inserter(Filter):
-	pass
+	def __str__(self):
+		return "Inserter"
 	
 	
 # ----- TESTING ----- #

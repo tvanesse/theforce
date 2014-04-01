@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from gi.repository import Gtk, Gdk, GdkPixbuf
 from ..CSVHandler import CSVFile
+from ..Filters import *
 
 """
 Reminder : how the Builder works
@@ -33,11 +34,14 @@ filters_liststore = builder.get_object("filters_liststore")
 filters_iconview.set_pixbuf_column(1)
 filters_iconview.set_text_column(0)
 # The different filters
+
 filters_liststore.append(["Field selector", Gtk.IconTheme.get_default().load_icon("gtk-copy", 32, 0)])
 
 # Drag and drop behaviour. This is the source.
+# To distinguish the different filters, we send different `info` values.
+target = Gtk.TargetEntry.new("Field selector", flags=Gtk.TargetFlags.SAME_APP, info=23)
 filters_iconview.enable_model_drag_source(Gdk.ModifierType.BUTTON1_MASK,
-										  [],
+										  [target],
 										  Gdk.DragAction.COPY)	# Turns the iconview into a drag source for automatic DND
 filters_iconview.drag_source_add_text_targets()
 
@@ -46,7 +50,7 @@ filters_iconview.drag_source_add_text_targets()
 # -----------------
 new_item_button = builder.get_object("new_item_button")
 new_item_button.drag_dest_set(Gtk.DestDefaults.ALL,
-								[],
+								[target],
 								Gdk.DragAction.COPY)	# Sets the button as a potential drop destination
 new_item_button.drag_dest_add_text_targets()
 
@@ -81,8 +85,15 @@ class Signal_Handlers:
 		print("Drag started.")
 		
 	def on_filters_iconview_drag_data_get(self, widget, drag_context, data, info, time):
-		print("Info : {}, Data : {}".format(info, data))
-		print("Drag-context : {}".format(drag_context))
+		if info == 23 :
+			print("Field selector detected")
+			f = FieldSelector()
+			filter_image = Gtk.Image()
+			filter_image.set_from_file("theforce/GUI/icons/yoda_32.png")
+			
+			new_item_button.set_image(filter_image)
+		else :
+			print("Bordel")
 		
 	def on_workflow_drag_data_received(self, widget, drag_context, x,y, data,info, time):
 		print("Drop")

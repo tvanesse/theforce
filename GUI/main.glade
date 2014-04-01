@@ -104,7 +104,7 @@
                 <child>
                   <object class="GtkScrolledWindow" id="scrolledwindow_display">
                     <property name="width_request">530</property>
-                    <property name="height_request">284</property>
+                    <property name="height_request">304</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="shadow_type">in</property>
@@ -113,10 +113,44 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>
-                          <object class="GtkImage" id="yoda_image">
+                          <object class="GtkBox" id="box2">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="pixbuf">icons/yoda_128.png</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkViewport" id="viewport2">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <child>
+                                  <object class="GtkImage" id="yoda_image">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="pixbuf">icons/yoda_256.png</property>
+                                  </object>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="welcome_label">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">The Force 1.0, &lt;i&gt;"A New Pope"&lt;/i&gt;
+Copyright (C) 2014  Thomas Vanesse
+</property>
+                                <property name="use_markup">True</property>
+                                <property name="justify">center</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
                           </object>
                         </child>
                       </object>
@@ -129,6 +163,7 @@
                 </child>
                 <child>
                   <object class="GtkNotebook" id="notebook1">
+                    <property name="width_request">155</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
@@ -255,7 +290,6 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="new_item_button">
-                        <property name="label" translatable="yes">           </property>
                         <property name="width_request">77</property>
                         <property name="height_request">69</property>
                         <property name="visible">True</property>
@@ -263,6 +297,8 @@
                         <property name="receives_default">True</property>
                         <property name="tooltip_text" translatable="yes">Drop an item from the filter menu.</property>
                         <property name="relief">half</property>
+                        <property name="image_position">right</property>
+                        <property name="always_show_image">True</property>
                         <signal name="drag-data-received" handler="on_workflow_drag_data_received" swapped="no"/>
                       </object>
                       <packing>
